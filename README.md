@@ -152,9 +152,9 @@ cp backend/.env.example backend/.env
 Then fill in the values:
 
 ```env
-NODE_ENV=development
+NODE_ENV=production
 PORT=5000
-CLIENT_URL=http://localhost:5173
+CLIENT_URL=https://your-frontend-url.vercel.app
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT.supabase.co:5432/postgres
 JWT_SECRET=your_access_token_secret
 JWT_REFRESH_SECRET=your_refresh_token_secret
@@ -181,8 +181,8 @@ cp frontend/.env.example frontend/.env
 ```
 
 ```env
-VITE_API_URL=http://localhost:5000/api
-VITE_SOCKET_URL=http://localhost:5000
+VITE_API_URL=https://event-management-system-backend-01.onrender.com/api
+VITE_SOCKET_URL=https://event-management-system-backend-01.onrender.com
 ```
 
 ---
@@ -235,7 +235,7 @@ cd backend
 npm run dev
 ```
 
-The backend will start at **http://localhost:5000**
+The backend will start at **http://localhost:5000** (or deployed at **https://event-management-system-backend-01.onrender.com**)
 
 ### Start the Frontend
 
@@ -244,7 +244,7 @@ cd frontend
 npm run dev
 ```
 
-The frontend will start at **http://localhost:5173**
+The frontend will start at **http://localhost:5173** (or your deployed Vercel URL)
 
 > 💡 **First Admin Setup:** Register via `/admin/register`. The **first registered admin** gets admin access automatically. Any subsequent admin registrations require promotion by an existing admin.
 
