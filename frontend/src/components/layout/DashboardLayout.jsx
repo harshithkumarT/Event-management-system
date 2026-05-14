@@ -1,6 +1,7 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { Bell, CalendarRange, ChartColumn, Home, Layers3, LogOut, Settings, Shield, Ticket } from 'lucide-react';
+import { Bell, CalendarRange, ChartColumn, Home, Layers3, LogOut, MoonStar, Settings, Shield, SunMedium, Ticket } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { Button } from '../ui/Button';
 
 const userNav = [
@@ -21,6 +22,7 @@ const adminNav = [
 
 export const DashboardLayout = ({ admin = false }) => {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navItems = admin ? adminNav : userNav;
 
   return (
@@ -63,7 +65,12 @@ export const DashboardLayout = ({ admin = false }) => {
         </aside>
         <div>
           <header className="border-b border-white/10 bg-slate-950/80 px-6 py-5 backdrop-blur-xl lg:px-8">
-            <p className="text-sm uppercase tracking-[0.24em] text-slate-400">{admin ? 'Admin Dashboard' : 'User Dashboard'}</p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-400">{admin ? 'Admin Dashboard' : 'User Dashboard'}</p>
+              <Button variant="ghost" size="sm" onClick={toggleTheme} aria-label="Toggle theme">
+                {theme === 'dark' ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
+              </Button>
+            </div>
           </header>
           <main className="p-6 lg:p-8">
             <Outlet />

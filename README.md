@@ -1,223 +1,327 @@
-# Event Management System
+# 🎫 EventFlow — Event Management System
 
-A production-oriented event management platform with a React/Tailwind frontend, an Express/PostgreSQL backend, JWT authentication, realtime notifications, booking workflows, admin analytics, and deployment targets for Vercel, Render, and Supabase PostgreSQL.
+A full-stack **Event Management System** built with the **PERN stack** (PostgreSQL, Express.js, React, Node.js). It allows users to browse events, book tickets, and manage their bookings — while admins can create events, manage users, and view analytics from a dedicated dashboard.
 
-## Tech Stack
+---
 
-- Frontend: React, React Router, Tailwind CSS, Axios, React Hook Form, Framer Motion, Socket.IO client
-- Backend: Node.js, Express.js ES modules, JWT, bcrypt, Multer, Socket.IO, PDFKit, Nodemailer
-- Database: PostgreSQL
-- Deployment: Vercel frontend, Render backend, Supabase PostgreSQL
+## 📋 Table of Contents
 
-## Folder Structure
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Prerequisites](#-prerequisites)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Database Setup](#-database-setup)
+- [Running the Application](#-running-the-application)
+- [API Endpoints](#-api-endpoints)
+- [Screenshots](#-screenshots)
+- [License](#-license)
 
-```text
-backend/
-  src/
-    config/
-    controllers/
-    middleware/
-    models/
-    routes/
-    services/
-    utils/
-    server.js
-    app.js
-  sql/
-    schema.sql
-frontend/
-  src/
-    api/
-    components/
-    context/
-    pages/
-    services/
-    utils/
+---
+
+## ✨ Features
+
+### 👤 User Features
+- **User Registration & Login** — Secure authentication with JWT (access + refresh tokens)
+- **Browse Events** — View upcoming events with search and category filters
+- **Event Details** — See full event info including venue, date, price, and availability
+- **Book Tickets** — Reserve seats for events with real-time availability updates
+- **My Bookings** — View, track, and manage all your bookings
+- **Notifications** — Receive real-time notifications for booking updates
+- **Profile Management** — Update your name and profile image
+
+### 🔧 Admin Features
+- **Admin Dashboard** — Overview with total events, bookings, revenue, and pending actions
+- **Manage Events** — Create, edit, and delete events with image uploads
+- **Manage Users** — View all users, change roles, and toggle active status
+- **Manage Bookings** — View and update booking statuses (confirm, cancel, reject)
+- **Analytics** — Visual charts for revenue trends and event category distribution
+- **Revenue Reports** — Generate and download PDF revenue reports
+
+### 🔒 Security
+- JWT-based authentication with HTTP-only cookies
+- Password hashing with bcrypt
+- Rate limiting on auth endpoints
+- Helmet security headers
+- Role-based access control (user / admin)
+- Input validation with express-validator
+
+---
+
+## 🛠 Tech Stack
+
+| Layer      | Technology                                                  |
+| ---------- | ----------------------------------------------------------- |
+| **Frontend** | React 18, Vite, Tailwind CSS, Framer Motion, Recharts     |
+| **Backend**  | Node.js, Express.js, Socket.IO                            |
+| **Database** | PostgreSQL (hosted on Supabase)                            |
+| **Auth**     | JWT (access + refresh tokens), bcrypt                      |
+| **Other**    | Multer (file uploads), PDFKit (reports), Nodemailer, QRCode |
+
+---
+
+## 📁 Project Structure
+
+```
+event-management-system/
+├── backend/
+│   ├── src/
+│   │   ├── config/          # Database & Socket.IO configuration
+│   │   ├── controllers/     # Request handlers
+│   │   ├── middleware/       # Auth, validation, rate limiter, error handling
+│   │   ├── models/           # Database queries (SQL)
+│   │   ├── routes/           # API route definitions
+│   │   ├── services/         # Business logic layer
+│   │   ├── utils/            # JWT helpers, async handler, API response
+│   │   ├── app.js            # Express app setup
+│   │   └── server.js         # Server entry point
+│   ├── sql/
+│   │   └── schema.sql        # Database schema
+│   ├── .env.example           # Environment variable template
+│   └── package.json
+│
+├── frontend/
+│   ├── src/
+│   │   ├── api/              # Axios HTTP client configuration
+│   │   ├── components/       # Reusable UI components & layouts
+│   │   ├── context/          # React Context (Auth state management)
+│   │   ├── pages/
+│   │   │   ├── public/       # Home, Events, Login, Register, About, Contact
+│   │   │   ├── user/         # Profile, Bookings, Notifications, Settings
+│   │   │   └── admin/        # Dashboard, Events, Users, Bookings, Analytics
+│   │   ├── services/         # API service functions
+│   │   ├── utils/            # Helper utilities
+│   │   ├── App.jsx           # Root component with routing
+│   │   └── main.jsx          # Application entry point
+│   ├── .env.example           # Environment variable template
+│   └── package.json
+│
+├── .gitignore
+└── README.md
 ```
 
-## Local Setup
+---
 
-### 1. Database
+## 📦 Prerequisites
 
-Create a PostgreSQL database named `event-management-system` and use password `password` for the local development user if you are following the sample connection string.
+Make sure you have the following installed on your machine:
 
-Set the backend connection string in `backend/.env`:
+- **Node.js** (v18 or higher) — [Download](https://nodejs.org/)
+- **npm** (comes with Node.js)
+- **Git** — [Download](https://git-scm.com/)
+- A **Supabase** account (free tier works) — [Sign up](https://supabase.com/)
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/harshithkumar-dev/Event-management-system.git
+cd Event-management-system
+```
+
+### 2. Install Dependencies
+
+Install packages for both backend and frontend:
+
+```bash
+# Install backend dependencies
+cd backend
+npm install
+
+# Install frontend dependencies
+cd ../frontend
+npm install
+```
+
+---
+
+## 🔐 Environment Variables
+
+### Backend (`backend/.env`)
+
+Create a `.env` file inside the `backend/` folder by copying the example:
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+Then fill in the values:
 
 ```env
-DATABASE_URL=postgresql://postgres:password@localhost:5432/event-management-system
+NODE_ENV=development
+PORT=5000
+CLIENT_URL=http://localhost:5173
+DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT.supabase.co:5432/postgres
+JWT_SECRET=your_access_token_secret
+JWT_REFRESH_SECRET=your_refresh_token_secret
+JWT_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=30d
+BCRYPT_SALT_ROUNDS=12
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+EMAIL_FROM="Event Management System <no-reply@example.com>"
+SUPABASE_DB_SSL=true
 ```
 
-For Supabase, replace the connection string with the Supabase PostgreSQL URL and keep `SUPABASE_DB_SSL=true`.
+> **How to get the DATABASE_URL:**  
+> Go to [Supabase Dashboard](https://supabase.com/dashboard) → Your Project → **Settings** → **Database** → **Connection string** → Copy the **URI** and replace `[YOUR-PASSWORD]` with your database password.
 
-### 2. Backend
+### Frontend (`frontend/.env`)
+
+Create a `.env` file inside the `frontend/` folder:
+
+```bash
+cp frontend/.env.example frontend/.env
+```
+
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+---
+
+## 🗄 Database Setup
+
+### Option 1: Using Supabase SQL Editor (Recommended)
+
+1. Go to your [Supabase Dashboard](https://supabase.com/dashboard)
+2. Open the **SQL Editor**
+3. Copy the contents of `backend/sql/schema.sql`
+4. Paste and click **Run**
+
+### Option 2: Using Command Line
 
 ```bash
 cd backend
-npm install
-cp .env.example .env
+node -e "
+import pg from 'pg';
+import fs from 'fs';
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+const schema = fs.readFileSync('sql/schema.sql', 'utf8');
+await pool.query(schema);
+console.log('Database tables created!');
+await pool.end();
+"
+```
+
+### Database Tables
+
+| Table           | Description                             |
+| --------------- | --------------------------------------- |
+| `users`         | User accounts (name, email, role, etc.) |
+| `events`        | Event listings with details & seats     |
+| `bookings`      | User ticket bookings for events         |
+| `payments`      | Payment transaction records             |
+| `notifications` | User notification messages              |
+
+---
+
+## ▶️ Running the Application
+
+### Start the Backend Server
+
+```bash
+cd backend
 npm run dev
 ```
 
-### 3. Frontend
+The backend will start at **http://localhost:5000**
+
+### Start the Frontend
 
 ```bash
 cd frontend
-npm install
-cp .env.example .env
 npm run dev
 ```
 
-## Environment Variables
+The frontend will start at **http://localhost:5173**
 
-### Backend
+> 💡 **First Admin Setup:** Register via `/admin/register`. The **first registered admin** gets admin access automatically. Any subsequent admin registrations require promotion by an existing admin.
 
-- `PORT`
-- `CLIENT_URL`
-- `DATABASE_URL`
-- `JWT_SECRET`
-- `JWT_REFRESH_SECRET`
-- `JWT_EXPIRES_IN`
-- `JWT_REFRESH_EXPIRES_IN`
-- `BCRYPT_SALT_ROUNDS`
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USER`
-- `SMTP_PASS`
-- `EMAIL_FROM`
-- `SUPABASE_DB_SSL`
+---
 
-### Frontend
+## 📡 API Endpoints
 
-- `VITE_API_URL`
-- `VITE_SOCKET_URL`
+### Authentication
 
-## PostgreSQL Schema
-
-The schema is defined in `backend/sql/schema.sql` and includes:
-
-- `users`
-- `events`
-- `bookings`
-- `payments`
-- `notifications`
-
-### Relationship Summary
-
-- One user can create many events as an organizer.
-- One user can create many bookings.
-- One event can have many bookings.
-- One booking can have one payment record.
-- One user can have many notifications.
-
-### Important Constraints
-
-- `users.email` is unique.
-- `bookings` and `payments` use foreign keys for referential integrity.
-- Seat counts are managed transactionally during booking and cancellation.
-
-## Authentication Flow
-
-1. User registers or logs in through `/api/auth/register` or `/api/auth/login`.
-2. Backend returns an access token and refresh token.
-3. Access token is stored in the frontend state/localStorage for API calls.
-4. Refresh token is stored in an HTTP-only cookie.
-5. On access-token expiry, the frontend calls `/api/auth/refresh` to obtain a new token.
-6. Protected routes check the authenticated user role before rendering dashboard pages.
-
-## API Documentation
-
-### Auth
-
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `POST /api/auth/logout`
-- `POST /api/auth/refresh`
-- `GET /api/auth/me`
-- `PUT /api/auth/me`
+| Method | Endpoint             | Description               | Auth Required |
+| ------ | -------------------- | ------------------------- | ------------- |
+| POST   | `/api/auth/register` | Register a new user       | No            |
+| POST   | `/api/auth/login`    | Login and receive tokens  | No            |
+| POST   | `/api/auth/logout`   | Logout and clear cookies  | No            |
+| POST   | `/api/auth/refresh`  | Refresh the access token  | No            |
+| GET    | `/api/auth/me`       | Get current user profile  | Yes           |
+| PUT    | `/api/auth/me`       | Update profile            | Yes           |
 
 ### Events
 
-- `GET /api/events`
-- `GET /api/events/featured`
-- `GET /api/events/:id`
-- `POST /api/events` admin only
-- `PUT /api/events/:id` admin only
-- `DELETE /api/events/:id` admin only
-
-Query parameters for `GET /api/events`:
-
-- `search`
-- `category`
-- `date`
-- `sort`
-- `page`
-- `limit`
+| Method | Endpoint            | Description             | Auth Required |
+| ------ | ------------------- | ----------------------- | ------------- |
+| GET    | `/api/events`       | List all events         | No            |
+| GET    | `/api/events/:id`   | Get event details       | No            |
+| POST   | `/api/events`       | Create a new event      | Admin         |
+| PUT    | `/api/events/:id`   | Update an event         | Admin         |
+| DELETE | `/api/events/:id`   | Delete an event         | Admin         |
 
 ### Bookings
 
-- `POST /api/bookings`
-- `GET /api/bookings/me/history`
-- `GET /api/bookings/:id`
-- `PATCH /api/bookings/:id/cancel`
-- `GET /api/bookings/admin` admin only
-- `PATCH /api/bookings/:id/decision` admin only
-
-### Notifications
-
-- `GET /api/notifications`
-- `PATCH /api/notifications/:id/read`
-- `PATCH /api/notifications/read-all`
+| Method | Endpoint              | Description               | Auth Required |
+| ------ | --------------------- | ------------------------- | ------------- |
+| GET    | `/api/bookings`       | Get user's bookings       | Yes           |
+| POST   | `/api/bookings`       | Create a new booking      | Yes           |
+| PATCH  | `/api/bookings/:id`   | Update booking status     | Admin         |
 
 ### Admin
 
-- `GET /api/admin/analytics`
-- `GET /api/admin/users`
-- `PATCH /api/admin/users/:id/role`
-- `PATCH /api/admin/users/:id/status`
-- `GET /api/admin/reports/revenue`
+| Method | Endpoint                     | Description             | Auth Required |
+| ------ | ---------------------------- | ----------------------- | ------------- |
+| GET    | `/api/admin/analytics`       | Dashboard analytics     | Admin         |
+| GET    | `/api/admin/users`           | List all users          | Admin         |
+| PATCH  | `/api/admin/users/:id/role`  | Change user role        | Admin         |
+| PATCH  | `/api/admin/users/:id/status`| Toggle user active status | Admin       |
+| GET    | `/api/admin/revenue-report`  | Download revenue PDF    | Admin         |
 
-### Uploads
+### Other
 
-- `POST /api/uploads/image`
+| Method | Endpoint             | Description             | Auth Required |
+| ------ | -------------------- | ----------------------- | ------------- |
+| GET    | `/api/notifications` | Get user notifications  | Yes           |
+| POST   | `/api/uploads/image` | Upload an image         | Yes           |
+| GET    | `/api/health`        | API health check        | No            |
 
-## Deployment
+---
 
-### Frontend on Vercel
+## 📸 Screenshots
 
-1. Connect the repository in Vercel.
-2. Set the root directory to `frontend`.
-3. Configure `VITE_API_URL` and `VITE_SOCKET_URL` for the deployed backend.
-4. Build command: `npm run build`.
-5. Output directory: `dist`.
+### Home Page
+> The landing page showcasing featured events and hero section
 
-### Backend on Render
+### Events Listing
+> Browse all available events with search and category filters
 
-1. Create a new Web Service.
-2. Set the root directory to `backend`.
-3. Build command: `npm install`.
-4. Start command: `npm start`.
-5. Add all backend environment variables.
-6. Point `CLIENT_URL` to the Vercel deployment URL.
+### Admin Dashboard
+> Comprehensive admin panel with analytics, event management, and user management
 
-### Database on Supabase
+---
 
-1. Create a Supabase PostgreSQL database.
-2. Run the SQL from `backend/sql/schema.sql`.
-3. Copy the connection string into `DATABASE_URL`.
-4. Ensure SSL is enabled for the production connection.
+## 🧑‍💻 Author
 
-## Bonus Features Included
+**Harshithkumar T**
 
-- Realtime notifications via Socket.IO
-- QR code ticket generation
-- Email notification hook
-- PDF revenue report export
-- Dark/light theme support
-- Responsive SaaS-style layouts
-- Protected user and admin dashboards
+- GitHub: [@harshithkumar-dev](https://github.com/harshithkumar-dev)
 
-## Notes
+---
 
-- The backend follows a controller/service/model split.
-- The frontend uses lazy-loaded routes and reusable UI components.
-- The sample code is structured to be production-ready and deployment-friendly, but you should still run dependency installation and end-to-end verification in your target environment before launch.
+## 📄 License
+
+This project is built for educational and portfolio purposes.

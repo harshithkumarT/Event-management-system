@@ -16,18 +16,24 @@ export default function AdminRegisterPage() {
   } = useForm({ mode: 'onChange' });
 
   const submitRequest = async (payload) => {
-    await http.post('/auth/register', {
+    const { data } = await http.post('/auth/register', {
       name: payload.name,
       email: payload.email,
       password: payload.password,
+      role: 'admin',
     });
 
-    // Register endpoint sets auth cookies; clear them so this page
-    // behaves as a request flow and doesn't auto-login.
-    await http.post('/auth/logout');
+    const nextUser = data.data.user;
 
-    toast.success('Account created. Ask an existing admin to grant admin access.');
-    navigate('/admin/login');
+    if (nextUser?.role === 'admin') {
+      toast.success('Admin account created! Redirecting...');
+      navigate('/admin/login');
+    } else {
+      // An admin already existed, so user was created with 'user' role
+      await http.post('/auth/logout');
+      toast.success('Account created. Ask an existing admin to grant admin access.');
+      navigate('/admin/login');
+    }
   };
 
   return (
