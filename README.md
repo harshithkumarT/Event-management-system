@@ -2,6 +2,8 @@
 
 A full-stack **Event Management System** built with the **PERN stack** (PostgreSQL, Express.js, React, Node.js). It allows users to browse events, book tickets, and manage their bookings — while admins can create events, manage users, and view analytics from a dedicated dashboard.
 
+🚀 **Live Demo:** [https://event-management-system-frontend-gupi.onrender.com](https://event-management-system-frontend-gupi.onrender.com)
+
 ---
 
 ## 📋 Table of Contents
@@ -154,7 +156,7 @@ Then fill in the values:
 ```env
 NODE_ENV=production
 PORT=5000
-CLIENT_URL=https://your-frontend-url.vercel.app
+CLIENT_URL=https://event-management-system-frontend-gupi.onrender.com
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT.supabase.co:5432/postgres
 JWT_SECRET=your_access_token_secret
 JWT_REFRESH_SECRET=your_refresh_token_secret
@@ -244,7 +246,7 @@ cd frontend
 npm run dev
 ```
 
-The frontend will start at **http://localhost:5173** (or your deployed Vercel URL)
+The frontend will start at **http://localhost:5173** (or deployed at **https://event-management-system-frontend-gupi.onrender.com**)
 
 > 💡 **First Admin Setup:** Register via `/admin/register`. The **first registered admin** gets admin access automatically. Any subsequent admin registrations require promotion by an existing admin.
 
