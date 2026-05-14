@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const http = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://event-management-system-backend-01.onrender.com/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://event-management-system-backend-02.onrender.com/api',
   withCredentials: true,
 });
 

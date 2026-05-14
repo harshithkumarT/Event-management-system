@@ -181,8 +181,8 @@ cp frontend/.env.example frontend/.env
 ```
 
 ```env
-VITE_API_URL=https://event-management-system-backend-01.onrender.com/api
-VITE_SOCKET_URL=https://event-management-system-backend-01.onrender.com
+VITE_API_URL=https://event-management-system-backend-02.onrender.com/api
+VITE_SOCKET_URL=https://event-management-system-backend-02.onrender.com
 ```
 
 ---
@@ -235,7 +235,7 @@ cd backend
 npm run dev
 ```
 
-The backend will start at **http://localhost:5000** (or deployed at **https://event-management-system-backend-01.onrender.com**)
+The backend will start at **http://localhost:5000** (or deployed at **https://event-management-system-backend-02.onrender.com**)
 
 ### Start the Frontend
 

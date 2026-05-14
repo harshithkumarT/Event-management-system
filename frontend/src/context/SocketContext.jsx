@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
       return undefined;
     }
 
-    const nextSocket = io(import.meta.env.VITE_SOCKET_URL || 'https://event-management-system-backend-01.onrender.com', {
+    const nextSocket = io(import.meta.env.VITE_SOCKET_URL || 'https://event-management-system-backend-02.onrender.com', {
       auth: { token: accessToken },
       transports: ['websocket'],
     });
