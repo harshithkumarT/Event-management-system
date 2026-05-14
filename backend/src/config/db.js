@@ -1,7 +1,11 @@
 import dotenv from 'dotenv';
 import pg from 'pg';
+import dns from 'dns';
 
 dotenv.config();
+
+// Force IPv4 to fix Render + Supabase IPv6 connectivity issue
+dns.setDefaultResultOrder('ipv4first');
 
 const { Pool } = pg;
 
