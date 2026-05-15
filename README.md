@@ -237,7 +237,7 @@ cd backend
 npm run dev
 ```
 
-The backend will start at **http://localhost:5000** (or deployed at **https://event-management-system-backend-02.onrender.com**)
+The backend will start at **https://event-management-system-backend-02.onrender.com**
 
 ### Start the Frontend
 
@@ -246,7 +246,7 @@ cd frontend
 npm run dev
 ```
 
-The frontend will start at **http://localhost:5173** (or deployed at **https://event-management-system-frontend-gupi.onrender.com**)
+The frontend will start at **https://event-management-system-frontend-gupi.onrender.com**
 
 > 💡 **First Admin Setup:** Register via `/admin/register`. The **first registered admin** gets admin access automatically. Any subsequent admin registrations require promotion by an existing admin.
 
