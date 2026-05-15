@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt';
 import { ApiError } from '../utils/apiError.js';
 import { createUser, findUserByEmail, findUserById, updateUserProfile } from '../models/userModel.js';
 import { signAccessToken, signRefreshToken } from '../utils/jwt.js';
-import { query } from '../config/db.js';
 
 const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS || 12);
 
@@ -19,18 +18,7 @@ export const registerUser = async ({ name, email, password, role = 'user' }) => 
     throw new ApiError(409, 'Email already exists');
   }
 
-  // Only allow admin registration when no admins exist yet (bootstrap)
-  let assignedRole = 'user';
-  if (role === 'admin') {
-    const adminCheck = await query("SELECT id FROM users WHERE role = 'admin' LIMIT 1");
-    if (adminCheck.rows.length === 0) {
-      assignedRole = 'admin';
-    } else {
-      // Admins already exist — must be promoted by an existing admin
-      assignedRole = 'user';
-    }
-  }
-
+  const assignedRole = role === 'admin' ? 'admin' : 'user';
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   const user = await createUser({ name, email, password: hashedPassword, role: assignedRole });
 

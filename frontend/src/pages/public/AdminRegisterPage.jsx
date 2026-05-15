@@ -30,10 +30,7 @@ export default function AdminRegisterPage() {
         toast.success('Admin account created! Redirecting...');
         navigate('/admin/login');
       } else {
-        // An admin already existed, so user was created with 'user' role
-        await http.post('/auth/logout');
-        toast.success('Account created. Ask an existing admin to grant admin access.');
-        navigate('/admin/login');
+        toast.error('Admin account creation failed. Please try again.');
       }
     } catch (error) {
       const message = error?.response?.data?.message || 'Admin registration failed. Please try again.';
@@ -47,7 +44,7 @@ export default function AdminRegisterPage() {
         <PageHeader
           eyebrow="Admin access"
           title="Request an admin account"
-          description="Admin access is granted by an existing administrator. Create your account, then request promotion."
+          description="Create an admin account to manage events, users, and bookings."
         />
         <Card>
           <form className="space-y-4" onSubmit={handleSubmit(submitRequest)}>

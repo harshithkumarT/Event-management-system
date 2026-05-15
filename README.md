@@ -248,7 +248,7 @@ npm run dev
 
 The frontend will start at **https://event-management-system-frontend-gupi.onrender.com**
 
-> 💡 **First Admin Setup:** Register via `/admin/register`. The **first registered admin** gets admin access automatically. Any subsequent admin registrations require promotion by an existing admin.
+> 💡 **Admin Setup:** Register via `/admin/register` to create an admin account.
 
 ---
 
