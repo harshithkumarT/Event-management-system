@@ -57,21 +57,39 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (payload) => {
-    const { data } = await http.post('/auth/register', payload);
-    persistSession(data.data.user, data.data.accessToken);
-    toast.success('Registration successful');
-    navigate('/dashboard/profile');
+    try {
+      const { data } = await http.post('/auth/register', payload);
+      persistSession(data.data.user, data.data.accessToken);
+      toast.success('Registration successful');
+      navigate('/dashboard/profile');
+    } catch (error) {
+      const message = error?.response?.data?.message || 'Registration failed. Please try again.';
+      toast.error(message);
+    }
   };
 
   const login = async (payload) => {
-    const { data } = await http.post('/auth/login', payload);
-    persistSession(data.data.user, data.data.accessToken);
-    toast.success('Welcome back');
-    navigate(data.data.user.role === 'admin' ? '/admin' : '/dashboard/profile');
+    try {
+      const { data } = await http.post('/auth/login', payload);
+      persistSession(data.data.user, data.data.accessToken);
+      toast.success('Welcome back');
+      navigate(data.data.user.role === 'admin' ? '/admin' : '/dashboard/profile');
+    } catch (error) {
+      const message = error?.response?.data?.message || 'Login failed. Please try again.';
+      toast.error(message);
+    }
   };
 
   const loginAdmin = async (payload) => {
-    const { data } = await http.post('/auth/login', payload);
+    let data;
+    try {
+      const response = await http.post('/auth/login', payload);
+      data = response.data;
+    } catch (error) {
+      const message = error?.response?.data?.message || 'Login failed. Please try again.';
+      toast.error(message);
+      return;
+    }
     const nextUser = data.data.user;
 
     if (nextUser?.role !== 'admin') {

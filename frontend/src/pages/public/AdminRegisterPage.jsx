@@ -16,23 +16,28 @@ export default function AdminRegisterPage() {
   } = useForm({ mode: 'onChange' });
 
   const submitRequest = async (payload) => {
-    const { data } = await http.post('/auth/register', {
-      name: payload.name,
-      email: payload.email,
-      password: payload.password,
-      role: 'admin',
-    });
+    try {
+      const { data } = await http.post('/auth/register', {
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+        role: 'admin',
+      });
 
-    const nextUser = data.data.user;
+      const nextUser = data.data.user;
 
-    if (nextUser?.role === 'admin') {
-      toast.success('Admin account created! Redirecting...');
-      navigate('/admin/login');
-    } else {
-      // An admin already existed, so user was created with 'user' role
-      await http.post('/auth/logout');
-      toast.success('Account created. Ask an existing admin to grant admin access.');
-      navigate('/admin/login');
+      if (nextUser?.role === 'admin') {
+        toast.success('Admin account created! Redirecting...');
+        navigate('/admin/login');
+      } else {
+        // An admin already existed, so user was created with 'user' role
+        await http.post('/auth/logout');
+        toast.success('Account created. Ask an existing admin to grant admin access.');
+        navigate('/admin/login');
+      }
+    } catch (error) {
+      const message = error?.response?.data?.message || 'Admin registration failed. Please try again.';
+      toast.error(message);
     }
   };
 

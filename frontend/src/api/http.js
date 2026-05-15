@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const rawBaseUrl = import.meta.env.VITE_API_URL || 'https://event-management-system-backend-02.onrender.com/api';
+const normalizedBaseUrl = rawBaseUrl.replace(/\/+$/, '');
+const baseURL = normalizedBaseUrl.endsWith('/api') ? normalizedBaseUrl : `${normalizedBaseUrl}/api`;
+
 const http = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://event-management-system-backend-02.onrender.com/api',
+  baseURL,
   withCredentials: true,
 });
 
